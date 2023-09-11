@@ -7,7 +7,7 @@ WORKDIR /home/choreouser
 COPY . /home/choreouser/
 
 
-
+EXPOSE 3000
 RUN apt-get update &&\
     npm install -r package.json &&\
     addgroup --gid 10001 choreo &&\

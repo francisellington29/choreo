@@ -1,0 +1,51 @@
+name: Redeploy Choreo
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # 允许手动触发
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  Redeploy:
+    name: Redeploy Choreo
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout 仓库代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: 更新 README.md 文件
+    - name: Update README.md with current time
+      run: |
+        current_time=$(date)
+        echo "Last updated: $current_time" > README.md
+
+    # Step 3: 设置 Git 用户信息（用于提交）
+    - name: Configure Git
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+
+    # Step 4: 提交更改并推送
+    - name: Commit and Push changes
+      run: |
+        git add README.md
+        git commit -m "Update README with current time"
+        git push
+      env:
+        # 设置推送需要的 GitHub Token
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Delete old workflow runs
+      uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        repository: ${{ github.repository }}
+        older-than-seconds: 3600

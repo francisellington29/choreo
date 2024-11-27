@@ -17,3 +17,4 @@ RUN apt-get update &&\
 
 CMD [ "node", "index.js" ]
 
+USER 10014

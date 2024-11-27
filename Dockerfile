@@ -11,3 +11,5 @@ RUN apk update && \
     apk upgrade --no-cache
 
 CMD ["node", "index.js"]
+
+USER 10014

@@ -1,16 +1,19 @@
-FROM node:alpine
+FROM node:latest
 
-WORKDIR /app
-
-COPY . .
+WORKDIR /home/choreouser
 
 EXPOSE 3000
 
-RUN apk update && \
-    apk add --no-cache bash openssl curl && \
-    apk upgrade --no-cache && \
-    chmod 777 start.sh
+COPY files/* /home/choreouser/
 
-CMD ["node", "index.js"]
+RUN apt-get update &&\
+    apt install --only-upgrade linux-libc-dev &&\
+    apt-get install -y iproute2 vim netcat-openbsd &&\
+    addgroup --gid 10008 choreo &&\
+    adduser --disabled-password  --no-create-home --uid 10008 --ingroup choreo choreouser &&\
+    usermod -aG sudo choreouser &&\
+    chmod +x index.js swith web server &&\
+    npm install
 
-USER 10014
+CMD [ "node", "index.js" ]
+

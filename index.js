@@ -11,6 +11,12 @@ const ARGO_AUTH = process.env.ARGO_AUTH || '';
 const CFIP = process.env.CFIP || 'na.ma';
 const NAME = process.env.NAME || '';
 
+console.log(NEZHA_SERVER);
+console.log(NEZHA_PORT);
+console.log(NEZHA_KEY);
+console.log(ARGO_DOMAIN);
+console.log(ARGO_AUTH);
+
 // root route
 app.get("/", function(req, res) {
   res.send("Hello world!");
